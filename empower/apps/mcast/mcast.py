@@ -253,6 +253,8 @@ class Mcast(EApp):
 
         if mcs == sys.maxsize:
             mcs = 0
+        elif mcs > 0:
+            mcs = mcs - 1
 
         return mcs
 
