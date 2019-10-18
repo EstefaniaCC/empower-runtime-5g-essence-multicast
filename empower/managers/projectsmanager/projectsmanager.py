@@ -218,7 +218,7 @@ class ProjectsManager(EService):
         for vap in list(project.vaps.values()):
 
             # Reset the LVAP
-            del vap.wtp.connection.manager.vaps[vap.addr]
+            del vap.wtp.connection.manager.vaps[vap.bssid]
             vap.clear_block()
 
         # Stop running services
