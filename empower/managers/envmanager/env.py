@@ -104,6 +104,14 @@ class Env(MongoModel):
 
         self.save()
 
+    def remove_service_state(self, service_id):
+        """Remove service state."""
+
+        del self.bootstrap[str(service_id)]
+        del self.storage[str(service_id)]
+
+        self.save()
+
     def register_service(self, service_id, name, params):
         """Register service."""
 
@@ -155,11 +163,20 @@ class Env(MongoModel):
     def start_services(self):
         """Start registered services."""
 
-        for service_id in self.bootstrap:
-            name = self.bootstrap[service_id]['name']
-            params = self.bootstrap[service_id]['params']
-            storage = self.storage[service_id]
-            self.start_service(uuid.UUID(service_id), name, params, storage)
+        for service_id in list(self.bootstrap):
+
+            try:
+
+                name = self.bootstrap[service_id]['name']
+                params = self.bootstrap[service_id]['params']
+                storage = self.storage[service_id]
+                service_id = uuid.UUID(service_id)
+
+                self.start_service(service_id, name, params, storage)
+
+            except TypeError as ex:
+
+                self.remove_service_state(service_id)
 
     def stop_services(self):
         """Stop registered services."""
