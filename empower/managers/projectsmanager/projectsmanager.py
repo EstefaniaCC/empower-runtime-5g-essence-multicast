@@ -208,7 +208,7 @@ class ProjectsManager(EService):
 
             # The LVAP is associated
             if lvap.ssid and lvap.wtp.connection:
-                lvap.wtp.connection.send_lvap_leave_message_to_self(lvap)
+                lvap.wtp.connection.send_client_leave_message_to_self(lvap)
 
             # Reset the LVAP
             del lvap.wtp.connection.manager.lvaps[lvap.addr]
